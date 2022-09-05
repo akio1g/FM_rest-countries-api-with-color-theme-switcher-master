@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/starter.css">
+
+
+    <script src="js/app.js"></script>
+
+    <title>Where in the World?</title>
+</head>
+<body>
+    <header>
+        <h1>Where in the World?</h1>
+        <button><img src="moon.svg" alt="moon"> Dark Mode</button>
+    </header>
+    <main>
+        <aside id="filter">
+            <label for="text-search">
+                <img src="lupa.svg" alt="lupa">
+                <input type="text" placeholder="Search for a country..." id="text-search">
+            </label>
+
+            <div id="filter-options">
+                <select>
+                    <option selected hidden>Filter by Region</option>
+                </select>
+                <div id="region-options" class="show-options">
+                    <p>Africa</p>
+                    <p>Americas</p>
+                    <p>Asia</p>
+                    <p>Europe</p>
+                    <p>Oceania</p>
+                </div>
+            </div>
+            
+        </aside>
+        <article>
+        </article>
+    </main>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('https://restcountries.com/v3.1/all?fields=name,capital,population,region,flags,');
+                const data = await response.json();
+                for (let country of data) {
+                    const flag = country.flags.svg;
+                    const name = country.name.common;
+                    const population = country.population;
+                    const region = country.region;
+                    const capital = country.capital;
+                    await loadSections(flag, name, population, region, capital);
+                }
+            } catch (e) {
+                alert('Error loading API');
+            }
+        });
+    </script>
+</body>
+</html>
