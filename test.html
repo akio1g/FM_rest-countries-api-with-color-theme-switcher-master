@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/starter.css">
+
+
+    <title>Where in the World?</title>
+</head>
+<body>
+    <header>
+        <h1>Where in the World?</h1>
+        <button onclick="darkMode()"><img src="moon.svg" alt="moon"><img src="moon-dark.svg" alt="moon-dark"> Dark Mode</button>
+    </header>
+    <main>
+        <aside id="filter">
+        </aside>
+        <article>
+            <button id="back-btn" onclick="backToMenu()">&larr; Back</button>
+            <section id="country-detail">
+                <img src="1200px-Flag_of_Brazil.png" alt="flag">
+                <h1>' + + '</h1>
+                <div>
+                    <h4>Native Name: <span></span></h4>
+                    <h4>Population: <span></span></h4>
+                    <h4>Region: <span></span></h4>
+                    <h4>Sub Region: <span></span></h4>
+                    <h4>Capital: <span></span></h4>
+                </div>
+                <div>
+                    <h4>TopLevel Domain: <span></span></h4>
+                    <h4>Currencies: <span></span></h4>
+                    <h4>Languages: <span></span></h4>
+                </div>
+                <div>
+                    <h2>Border Countries:</h2>
+                    <li>
+                        <button onclick="onDetail(country)"></button>
+                    </li>
+                </div>
+            </section>
+        </article>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+:root {
+    --dark-elements: hsl(209, 23%, 22%);
+    --dark-background: hsl(207, 26%, 17%);
+    --dark-text: #FFF;
+}
+
+header, .country, #text-search, #region-options, #filter-options > button {
+    background-color: var(--dark-elements);
+}
+
+body {
+    background-color: var(--dark-background);
+}
+
+header > h1, header > button {
+    color: var(--dark-text);
+}
+
+h2, h3, h4, img[src='moon.svg'], a, button, #text-search::placeholder {
+    color: var(--dark-text);
+}
+
+img[src='lupa.svg'], img[src='moon.svg'], img[src='filter.svg'] {
+    display: none;
+}
+
+img[src='lupa-dark.svg'], img[src='moon-dark.svg'], img[src='filter-dark.svg'] {
+    display: block;
+}

@@ -1,6 +1,10 @@
 :root {
     --font: 'Nunito Sans';
     --border-radius: 5px;
+    --light-text: hsl(200, 15%, 8%);
+    --light-input: hsl(0, 0%, 52%);
+    --light-background: hsl(0, 0%, 98%);
+    --white: hsl(0,0%, 100%);
 }
 
 * {
@@ -11,10 +15,15 @@
     box-sizing: border-box;
 }
 
+img[src='lupa-dark.svg'], img[src='moon-dark.svg'], img[src='filter-dark.svg'] {
+    display: none;
+}
+
 body {
     margin: auto;
     max-width: 1280px;
     font-family: var(--font);
+    background-color: var(--light-background);
 }
 
 header {
@@ -27,6 +36,7 @@ header {
 header > h1 {
     font-size: 16px;
     font-weight: 800;
+    color: var(--light-text);
 }
 
 header > button {
@@ -38,9 +48,11 @@ header > button {
     font-family: var(--font);
     font-weight: 600;
     font-size: 14px;
+    color: var(--light-text);
+    cursor: pointer;
 }
 
-img[src="moon.svg"] {
+img[src="moon.svg"], img[src="moon-dark.svg"] {
     width: 15px;
 }
 
@@ -58,13 +70,13 @@ aside > label {
     position: relative;
 }
 
-img[src="lupa.svg"] {
+img[src="lupa.svg"], img[src='filter.svg'], img[src='lupa-dark.svg'], img[src='filter-dark.svg'] {
     width: 15px;
     position: absolute;
     top: 12px;
     left: 25px;
     font-weight: 300;
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 #text-search {
@@ -76,32 +88,42 @@ img[src="lupa.svg"] {
     border: none;
     box-shadow: 0 0 5px rgba(0,0,0,0.3);
     border-radius: var(--border-radius);
+    min-width: 200px;
+}
+
+#text-search:hover {
+    cursor: text;
 }
 
 #filter-options {
     position: relative;
     width: 50%;
+    min-width: 200px;
+    color: var(--light-text);
 }
 
-#filter-options > select {
+#filter-options > button {
     width: 100%;
     padding: 10px 0px 10px 20px;
     font-family: var(--font);
     font-weight: 300;
     font-size: 14px;
     border: none;
+    background-color: white;
     box-shadow: 0 0 5px rgba(0,0,0,0.3);
     border-radius: var(--border-radius);
+    position: relative;
+    cursor: pointer;
 }
 
-#filter-options > div{
+.hide-options{
     display: none;
 }
 
 .show-options {
+    display: block;
     width: 100%;
     position: absolute;
-    padding: 10px 20px;
     background-color: white;
     border: 1px solid transparent;
     border: none;
@@ -111,11 +133,17 @@ img[src="lupa.svg"] {
     top: 48px;
 }
 
-.show-options p {
+.show-options a {
+    display: block;
     font-family: var(--font);
     font-weight: 300;
     font-size: 14px;
-    padding: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.show-options a:hover {
+    background-color: rgba(0,0,0,0.1);
 }
 
 article {
@@ -125,6 +153,7 @@ article {
     row-gap: 40px;
     flex-direction: column;
     align-items: center;
+    position: relative;
 }
 
 
@@ -135,6 +164,8 @@ article {
     border: none;
     box-shadow: 0 0 5px rgba(0,0,0,0.3);
     border-radius: var(--border-radius);
+    color: var(--light-text);
+    cursor: pointer;
 }
 
 .country > div {
@@ -167,6 +198,75 @@ article {
 .country span {
     font-weight: 300;
 }
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* * DETAIL SCREEN */
+#back-btn {
+    max-width: 170px;
+    padding: 10px 30px;
+    font-family: var(--font);
+    font-weight: 300;
+    font-size: 14px;
+    border: none;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    cursor: pointer;
+}
+
+#country-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+#country-detail img { 
+    width: 100%;
+}
+
+#country-detail h4 {
+    font-weight: 600;
+}
+
+#country-detail span {
+    font-weight: 300;
+}
+
+#country-detail h2 {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+#country-detail button {
+    max-width: 170px;
+    padding: 10px 30px;
+    font-family: var(--font);
+    font-weight: 300;
+    font-size: 14px;
+    border: none;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    cursor: pointer;
+    margin: 0px 10px;
+}
+
+
 
 @media screen and (min-width:600px) {
     

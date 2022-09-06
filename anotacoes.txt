@@ -1,1 +1,3 @@
 COLOCAR UM LOADING ENQUANTO CONSOME API, FALTA DARK MODE
+
+https://restcountries.com/#api-endpoints-v3
