@@ -4,7 +4,7 @@
     --dark-text: #FFF;
 }
 
-header, .country, #text-search, #region-options, #filter-options > button {
+header, .country, #text-search, #region-options, #filter-options > button, #back-btn, #borders-list button {
     background-color: var(--dark-elements);
 }
 
@@ -12,7 +12,7 @@ body {
     background-color: var(--dark-background);
 }
 
-header > h1, header > button {
+header > h1, #country-detail > h1, header > button {
     color: var(--dark-text);
 }
 

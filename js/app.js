@@ -1,3 +1,14 @@
+let allData;
+
+async function loadAllContent() {
+    try {
+        const response = await fetch('https://restcountries.com/v3.1/all?fields=name,capital,population,region,flags,');
+        allData = await response.json();
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 window.addEventListener('DOMContentLoaded', noFilter());
 
 function darkMode() {
@@ -16,9 +27,10 @@ function darkMode() {
  */
 async function noFilter() {
     try {
-        const response = await fetch('https://restcountries.com/v3.1/all?fields=name,capital,population,region,flags,');
-        const data = await response.json();
-        for (let country of data) {
+        if(!allData) {
+            await loadAllContent();
+        }
+        for (let country of allData) {
             const flag = country.flags.svg;
             const name = country.name.common;
             const population = country.population;
@@ -49,10 +61,10 @@ function loadSections(flagsrc, countryName, countryPopulation, countryRegion, co
         '</section>';
 }
 
-/** clearSections()
+/** clearArticle()
  *  * clear the article tag and put a loader in the middle of the page
  */
-function clearSections() {
+function clearArticle() {
     document.querySelector('article').innerHTML = '<div id="loader" class="loader"></div>';
     document.getElementById('loader').style.display = 'block';
 }
@@ -70,7 +82,7 @@ function showMenu() {
  */
 async function filterByRegion(regionFiltered) {
     try {
-        clearSections();
+        clearArticle();
         const response = await fetch(`https://restcountries.com/v3.1/region/${regionFiltered}?fields=name,capital,population,region,flags,`);
         const data = await response.json();
         for (let country of data) {
@@ -95,7 +107,7 @@ async function filterByRegion(regionFiltered) {
 async function filterByCountry() {
     const countryFiltered = document.getElementById('text-search').value;
     if(countryFiltered) {
-        clearSections();
+        clearArticle();
         try {
             const response = await fetch (`https://restcountries.com/v3.1/name/${countryFiltered}?fields=name,capital,population,flags,`);
             const data = await response.json();
@@ -114,75 +126,112 @@ async function filterByCountry() {
             document.getElementById('loader').style.display = 'none';
         }
     } else {
-        clearSections();
+        clearArticle();
         noFilter();
     }
 }
 
 
 async function onDetail(countryName) {
-    clearSections();
+    clearArticle();
 
     try {
         const response = await fetch(`https://restcountries.com/v3.1/name/${countryName}?fields=flags,name,population,region,subregion,capital,tld,currencies,languages,borders,`);
         const data = await response.json();
+        
+        const borders = data[0].borders;
+        const capital = data[0].capital;
+        let nameOfCurrencies = '';
 
+        for (const [key, value] of Object.entries(data[0].currencies)) {
+            nameOfCurrencies += value.name + ', ';
+        }
+        nameOfCurrencies = nameOfCurrencies.slice(0,-2);
+
+        const flag = data[0].flags.svg;
+        const languages = data[0].languages;
+        const name = data[0].name.common;
+        const nativeName = data[0].name.official;
+        const pop = data[0].population;
+        const reg = data[0].region;
+        const subReg = data[0].subregion;
+        const tld = data[0].tld;
+        loadDetails(borders, capital, nameOfCurrencies, flag, languages, name, nativeName, pop, reg, subReg, tld);
+        
 
     } catch(e) {
-        alert('Fail Request');
-    }
+        console.log(e.message);
+    } 
 }
 
-function loadDetails(flagsrc, name, nativeName, population, region, subRegion, capital, tld, currencies, languages) {
-    
-    
+async function loadDetails(borders, capital, currencies, flagsrc, languages, name, nativeName, population, region, subRegion, tld) {
+
+    const aside = document.getElementsByTagName('aside')[0];
+    const article = document.getElementsByTagName('article')[0]
     let langString = '';
     for (let lang in languages) {
-        langString += languages[lang];
+        langString += languages[lang] + ', ';
     }
-    
-    document.getElementsByTagName('aside').style.display = 'none';
-    document.getElementsByTagName('article').innerHTML = `
-    <button id="back-btn" onclick="backToMenu()">&larr; Back</button>
-    <section id="country-detail">
-        <img src="${flagsrc}" alt="flag">
-        <h1>${name}</h1>
-        <div>
-            <h4>Native Name: <span>${nativeName}</span></h4>
-            <h4>Population: <span>${population}</span></h4>
-            <h4>Region: <span>${region}</span></h4>
-            <h4>Sub Region: <span>${subRegion}</span></h4>
-            <h4>Capital: <span>${capital}</span></h4>
-        </div>
-        <div>
-            <h4>TopLevel Domain: <span>${tld}</span></h4>
-            <h4>Currencies: <span>${currencies}</span></h4>
-            <h4>Languages: <span>${langString}</span></h4>
-        </div>
-        <div>
-            <h2>Border Countries:</h2>
-            <li id="borders-list">
-            </li>
-        </div>
-    </section>`;
-    const li = document.getElementById('borders-list');
-    for(const c of borders) { // tem que testar
-        let country = filterByCca3(c);
-        li.innerHTML += `<button onclick="onDetail(${country})">${country}</button>`;
+    langString = langString.slice(0,-2);
+    if(aside) {
+        aside.style.display = 'none';
     }
+    if(article) {
+        article.innerHTML = `
+        <button id="back-btn" onclick="backToMenu()">&larr; Back</button>
+        <section id="country-detail">
+            <img src="${flagsrc}" alt="flag">
+            <h1>${name}</h1>
+            <div>
+                <h4>Native Name: <span>${nativeName}</span></h4>
+                <h4>Population: <span>${population}</span></h4>
+                <h4>Region: <span>${region}</span></h4>
+                <h4>Sub Region: <span>${subRegion}</span></h4>
+                <h4>Capital: <span>${capital}</span></h4>
+            </div>
+            <div>
+                <h4>TopLevel Domain: <span>${tld}</span></h4>
+                <h4>Currencies: <span>${currencies}</span></h4>
+                <h4>Languages: <span>${langString}</span></h4>
+            </div>
+            <div>
+                <h2>Border Countries:</h2>
+                <li id="borders-list">
+                </li>
+            </div>
+        </section>`;
+        const li = document.getElementById('borders-list');
+        let country = await filterByCca3(borders, region);
+        for(const c of country) { // tem que testar
+            
+            li.innerHTML += `<button onclick="onDetail(\'${c}\')">${c}</button>`;
+        }
+    }    
 }
 
-async function filterByCca3(cca) {
-    let countryName = '';
+async function filterByCca3(cca, region) {
+    let countryName = [];
     try {
-        const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca3');
+        const response = await fetch(`https://restcountries.com/v3.1/region/${region}?fields=name,cca3`);
         const data = await response.json();
 
-        const obj = data.filter(country => country.cca3 === cca); // filtra pra pegar o obj que tem o mesmo cca
-        countryName = obj.name.common;
+        for(let abv of cca) {
+            for (let country of data) {
+                if (country.cca3 === abv) {
+                    countryName.push(country.name.common);
+                    break;
+                }
+            }
+        }
     } catch(e) {
         alert(e);
     }
 
     return countryName;
+}
+
+async function backToMenu() {
+    document.getElementsByTagName('aside')[0].style.display = 'flex';
+    clearArticle();
+    await noFilter();
 }
